@@ -7,6 +7,7 @@ type LabelSelector struct {
 
 type Requirement struct {
 	Key       string
+	Value     string
 	Values    []string
 	Operation Operation
 }

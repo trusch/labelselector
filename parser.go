@@ -123,7 +123,7 @@ func (p *Parser) parseNotEqualRequirement(key string) (req Requirement, err erro
 	req = Requirement{
 		Key:       key,
 		Operation: OperationNotEquals,
-		Values:    []string{lit},
+		Value:     lit,
 	}
 	return req, nil
 }
@@ -136,7 +136,7 @@ func (p *Parser) parseEqualRequirement(key string) (req Requirement, err error) 
 	req = Requirement{
 		Key:       key,
 		Operation: OperationEquals,
-		Values:    []string{lit},
+		Value:     lit,
 	}
 	return req, nil
 }

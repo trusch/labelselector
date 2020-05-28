@@ -78,6 +78,12 @@ func (s *Lexer) Next() (tok Token, lit string) {
 		return s.scanQuotedIdent()
 	case ch == eof:
 		return EOF, ""
+	case ch == ',':
+		return COMMA, string(ch)
+	case ch == '(':
+		return OPENING_BRACKET, string(ch)
+	case ch == ')':
+		return CLOSING_BRACKET, string(ch)
 	case ch == '!':
 		ch := s.read()
 		if ch == '=' {
@@ -92,12 +98,6 @@ func (s *Lexer) Next() (tok Token, lit string) {
 		}
 		s.unread()
 		return EQUAL, string(ch)
-	case ch == ',':
-		return COMMA, string(ch)
-	case ch == '(':
-		return OPENING_BRACKET, string(ch)
-	case ch == ')':
-		return CLOSING_BRACKET, string(ch)
 	}
 
 	return ILLEGAL, string(ch)
