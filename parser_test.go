@@ -28,6 +28,19 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
+			name:  "one equals test with '=='",
+			input: `foo == bar`,
+			expectedSelector: LabelSelector{
+				Requirements: []Requirement{
+					{
+						Key:       "foo",
+						Operation: OperationEquals,
+						Values:    []string{"bar"},
+					},
+				},
+			},
+		},
+		{
 			name:  "one equals test with extra whitespaces",
 			input: ` foo  = bar   `,
 			expectedSelector: LabelSelector{

@@ -19,7 +19,7 @@ const (
 	EXCLAMATION_MARK // !
 	IN               // in
 	NOT              // not
-	EQUAL            // =
+	EQUAL            // = or ==
 	NOT_EQUAL        // !=
 	OPENING_BRACKET  // (
 	CLOSING_BRACKET  // )
@@ -67,34 +67,36 @@ func (s *Lexer) unread() { _ = s.r.UnreadRune() }
 func (s *Lexer) Next() (tok Token, lit string) {
 	// Read the next rune.
 	ch := s.read()
-	if isWhitespace(ch) {
+	switch {
+	case isWhitespace(ch):
 		s.unread()
 		return s.scanWhitespace()
-	} else if isValidIdentRune(ch) {
+	case isValidIdentRune(ch):
 		s.unread()
 		return s.scanIdent()
-	} else if ch == '"' {
+	case ch == '"':
 		return s.scanQuotedIdent()
-	}
-
-	// Otherwise read the individual character.
-	switch ch {
-	case eof:
+	case ch == eof:
 		return EOF, ""
-	case '!':
+	case ch == '!':
 		ch := s.read()
 		if ch == '=' {
 			return NOT_EQUAL, "!="
 		}
 		s.unread()
 		return EXCLAMATION_MARK, string(ch)
-	case '=':
+	case ch == '=':
+		ch := s.read()
+		if ch == '=' {
+			return EQUAL, "=="
+		}
+		s.unread()
 		return EQUAL, string(ch)
-	case ',':
+	case ch == ',':
 		return COMMA, string(ch)
-	case '(':
+	case ch == '(':
 		return OPENING_BRACKET, string(ch)
-	case ')':
+	case ch == ')':
 		return CLOSING_BRACKET, string(ch)
 	}
 
