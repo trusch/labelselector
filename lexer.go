@@ -1,11 +1,12 @@
 package labelselector
 
 import (
-  "bufio"
-  "io"
-  "bytes"
-  "strings"
+	"bufio"
+	"bytes"
+	"io"
+	"strings"
 )
+
 // Token represents a lexical token.
 type Token int
 
@@ -13,15 +14,15 @@ const (
 	ILLEGAL Token = iota
 	EOF
 	WS
-	IDENT // identifier
-  COMMA    // ,
+	IDENT            // identifier
+	COMMA            // ,
 	EXCLAMATION_MARK // !
-  IN // in
-  NOT // not
-  EQUAL // =
-  NOT_EQUAL // !=
-  OPENING_BRACKET // (
-  CLOSING_BRACKET // )
+	IN               // in
+	NOT              // not
+	EQUAL            // =
+	NOT_EQUAL        // !=
+	OPENING_BRACKET  // (
+	CLOSING_BRACKET  // )
 )
 
 var eof = rune(0)
@@ -32,16 +33,16 @@ func isWhitespace(ch rune) bool {
 
 func isValidIdentRune(ch rune) bool {
 	return (ch >= 'a' && ch <= 'z') ||
-    (ch >= 'A' && ch <= 'Z') ||
-    (ch >= '0' && ch <= '9') ||
-    (ch == '_') ||
-    (ch == '-') ||
-    (ch == '.') ||
-    (ch == '/')
+		(ch >= 'A' && ch <= 'Z') ||
+		(ch >= '0' && ch <= '9') ||
+		(ch == '_') ||
+		(ch == '-') ||
+		(ch == '.') ||
+		(ch == '/')
 }
 
 type Lexer struct {
-  r *bufio.Reader
+	r *bufio.Reader
 }
 
 // NewLexer returns a new instance of Lexer.
@@ -73,19 +74,19 @@ func (s *Lexer) Next() (tok Token, lit string) {
 		s.unread()
 		return s.scanIdent()
 	} else if ch == '"' {
-    return s.scanQuotedIdent()
-  }
+		return s.scanQuotedIdent()
+	}
 
 	// Otherwise read the individual character.
 	switch ch {
 	case eof:
 		return EOF, ""
 	case '!':
-    ch := s.read()
-    if ch == '=' {
-      return NOT_EQUAL, "!="
-    }
-    s.unread()
+		ch := s.read()
+		if ch == '=' {
+			return NOT_EQUAL, "!="
+		}
+		s.unread()
 		return EXCLAMATION_MARK, string(ch)
 	case '=':
 		return EQUAL, string(ch)
@@ -145,7 +146,7 @@ func (s *Lexer) scanIdent() (tok Token, lit string) {
 	switch strings.ToUpper(buf.String()) {
 	case "NOT":
 		return NOT, buf.String()
-  case "IN":
+	case "IN":
 		return IN, buf.String()
 	}
 
@@ -154,11 +155,11 @@ func (s *Lexer) scanIdent() (tok Token, lit string) {
 }
 
 func (s *Lexer) scanQuotedIdent() (tok Token, lit string) {
-  // Create a buffer and read the current character into it.
+	// Create a buffer and read the current character into it.
 	var (
-    buf bytes.Buffer
-    last rune
-  )
+		buf  bytes.Buffer
+		last rune
+	)
 
 	// Read every subsequent ident character into the buffer.
 	// Non-ident characters and EOF will cause the loop to exit.
@@ -167,8 +168,8 @@ func (s *Lexer) scanQuotedIdent() (tok Token, lit string) {
 			break
 		} else {
 			_, _ = buf.WriteRune(ch)
-      last = ch
+			last = ch
 		}
 	}
-  return IDENT, buf.String()
+	return IDENT, buf.String()
 }
