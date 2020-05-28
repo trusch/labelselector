@@ -22,7 +22,59 @@ func TestParser(t *testing.T) {
 					{
 						Key:       "foo",
 						Operation: OperationEquals,
-						Values:    []string{"bar"},
+						Value:     "bar",
+					},
+				},
+			},
+		},
+		{
+			name:  "one lower than test",
+			input: `foo < 5`,
+			expectedSelector: LabelSelector{
+				Requirements: []Requirement{
+					{
+						Key:       "foo",
+						Operation: OperationLowerThan,
+						Value:     "5",
+					},
+				},
+			},
+		},
+		{
+			name:  "one lower than equal test",
+			input: `foo <= 5`,
+			expectedSelector: LabelSelector{
+				Requirements: []Requirement{
+					{
+						Key:       "foo",
+						Operation: OperationLowerThanEqual,
+						Value:     "5",
+					},
+				},
+			},
+		},
+		{
+			name:  "one greater than test",
+			input: `foo > 5`,
+			expectedSelector: LabelSelector{
+				Requirements: []Requirement{
+					{
+						Key:       "foo",
+						Operation: OperationGreaterThan,
+						Value:     "5",
+					},
+				},
+			},
+		},
+		{
+			name:  "one greater than equal test",
+			input: `foo >= 5`,
+			expectedSelector: LabelSelector{
+				Requirements: []Requirement{
+					{
+						Key:       "foo",
+						Operation: OperationGreaterThanEqual,
+						Value:     "5",
 					},
 				},
 			},
@@ -35,7 +87,7 @@ func TestParser(t *testing.T) {
 					{
 						Key:       "foo",
 						Operation: OperationEquals,
-						Values:    []string{"bar"},
+						Value:     "bar",
 					},
 				},
 			},
@@ -48,7 +100,7 @@ func TestParser(t *testing.T) {
 					{
 						Key:       "foo",
 						Operation: OperationEquals,
-						Values:    []string{"bar"},
+						Value:     "bar",
 					},
 				},
 			},
@@ -61,7 +113,7 @@ func TestParser(t *testing.T) {
 					{
 						Key:       "foo",
 						Operation: OperationNotEquals,
-						Values:    []string{"bar"},
+						Value:     "bar",
 					},
 				},
 			},
@@ -148,7 +200,7 @@ func TestParser(t *testing.T) {
 					{
 						Operation: OperationEquals,
 						Key:       "bla",
-						Values:    []string{"blub"},
+						Value:     "blub",
 					},
 				},
 			},
@@ -172,6 +224,26 @@ func TestParser(t *testing.T) {
 			name:          "equal operator needs argument",
 			input:         `foo=`,
 			expectedError: errors.New("expect identifier after equal operator"),
+		},
+		{
+			name:          "lower than operator needs argument",
+			input:         `foo<`,
+			expectedError: errors.New("expect identifier after < operator"),
+		},
+		{
+			name:          "lower than equal operator needs argument",
+			input:         `foo<=`,
+			expectedError: errors.New("expect identifier after <= operator"),
+		},
+		{
+			name:          "greater than operator needs argument",
+			input:         `foo>`,
+			expectedError: errors.New("expect identifier after > operator"),
+		},
+		{
+			name:          "greater than equal operator needs argument",
+			input:         `foo>=`,
+			expectedError: errors.New("expect identifier after >= operator"),
 		},
 		{
 			name:          "not equal operator needs argument",

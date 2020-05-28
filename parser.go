@@ -94,6 +94,18 @@ func (p *Parser) Parse() (LabelSelector, error) {
 			case IN:
 				// its a in requirement
 				req, err = p.parseInRequirement(key)
+			case LOWER_THAN:
+				// its a lower than requirement
+				req, err = p.parseLowerThanRequirement(key)
+			case LOWER_THAN_EQUAL:
+				// its a lower than equal requirement
+				req, err = p.parseLowerThanEqualRequirement(key)
+			case GREATER_THAN:
+				// its a greater than requirement
+				req, err = p.parseGreaterThanRequirement(key)
+			case GREATER_THAN_EQUAL:
+				// its a greater than equal requirement
+				req, err = p.parseGreaterThanEqualRequirement(key)
 			case NOT:
 				// its a not-in requirement
 				req, err = p.parseNotInRequirement(key)
@@ -136,6 +148,58 @@ func (p *Parser) parseEqualRequirement(key string) (req Requirement, err error) 
 	req = Requirement{
 		Key:       key,
 		Operation: OperationEquals,
+		Value:     lit,
+	}
+	return req, nil
+}
+
+func (p *Parser) parseLowerThanRequirement(key string) (req Requirement, err error) {
+	tok, lit := p.next()
+	if tok != IDENT {
+		return req, errors.New("expect identifier after < operator")
+	}
+	req = Requirement{
+		Key:       key,
+		Operation: OperationLowerThan,
+		Value:     lit,
+	}
+	return req, nil
+}
+
+func (p *Parser) parseLowerThanEqualRequirement(key string) (req Requirement, err error) {
+	tok, lit := p.next()
+	if tok != IDENT {
+		return req, errors.New("expect identifier after <= operator")
+	}
+	req = Requirement{
+		Key:       key,
+		Operation: OperationLowerThanEqual,
+		Value:     lit,
+	}
+	return req, nil
+}
+
+func (p *Parser) parseGreaterThanRequirement(key string) (req Requirement, err error) {
+	tok, lit := p.next()
+	if tok != IDENT {
+		return req, errors.New("expect identifier after > operator")
+	}
+	req = Requirement{
+		Key:       key,
+		Operation: OperationGreaterThan,
+		Value:     lit,
+	}
+	return req, nil
+}
+
+func (p *Parser) parseGreaterThanEqualRequirement(key string) (req Requirement, err error) {
+	tok, lit := p.next()
+	if tok != IDENT {
+		return req, errors.New("expect identifier after >= operator")
+	}
+	req = Requirement{
+		Key:       key,
+		Operation: OperationGreaterThanEqual,
 		Value:     lit,
 	}
 	return req, nil

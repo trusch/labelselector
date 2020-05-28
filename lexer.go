@@ -11,18 +11,22 @@ import (
 type Token int
 
 const (
-	ILLEGAL Token = iota
-	EOF
-	WS
-	IDENT            // identifier
-	COMMA            // ,
-	EXCLAMATION_MARK // !
-	IN               // in
-	NOT              // not
-	EQUAL            // = or ==
-	NOT_EQUAL        // !=
-	OPENING_BRACKET  // (
-	CLOSING_BRACKET  // )
+	ILLEGAL            Token = iota
+	EOF                      // end of file
+	WS                       // whitespace
+	IDENT                    // identifier
+	COMMA                    // ,
+	EXCLAMATION_MARK         // !
+	IN                       // in
+	NOT                      // not
+	EQUAL                    // = or ==
+	NOT_EQUAL                // !=
+	OPENING_BRACKET          // (
+	CLOSING_BRACKET          // )
+	LOWER_THAN               // <
+	LOWER_THAN_EQUAL         // <=
+	GREATER_THAN             // >
+	GREATER_THAN_EQUAL       // >=
 )
 
 var eof = rune(0)
@@ -90,14 +94,28 @@ func (s *Lexer) Next() (tok Token, lit string) {
 			return NOT_EQUAL, "!="
 		}
 		s.unread()
-		return EXCLAMATION_MARK, string(ch)
+		return EXCLAMATION_MARK, "!"
 	case ch == '=':
 		ch := s.read()
 		if ch == '=' {
 			return EQUAL, "=="
 		}
 		s.unread()
-		return EQUAL, string(ch)
+		return EQUAL, "="
+	case ch == '<':
+		ch := s.read()
+		if ch == '=' {
+			return LOWER_THAN_EQUAL, "<="
+		}
+		s.unread()
+		return LOWER_THAN, "<"
+	case ch == '>':
+		ch := s.read()
+		if ch == '=' {
+			return GREATER_THAN_EQUAL, ">="
+		}
+		s.unread()
+		return GREATER_THAN, ">"
 	}
 
 	return ILLEGAL, string(ch)

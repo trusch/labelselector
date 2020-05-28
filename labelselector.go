@@ -15,10 +15,14 @@ type Requirement struct {
 type Operation string
 
 const (
-	OperationIn        Operation = "in"
-	OperationNotIn     Operation = "notIn"
-	OperationExists    Operation = "exists"
-	OperationNotExists Operation = "notExist"
-	OperationEquals    Operation = "equals"
-	OperationNotEquals Operation = "notEquals"
+	OperationIn               Operation = "in"
+	OperationNotIn            Operation = "notIn"
+	OperationExists           Operation = "exists"
+	OperationEquals           Operation = "equals"
+	OperationNotExists        Operation = "notExist"
+	OperationNotEquals        Operation = "notEquals"
+	OperationLowerThan        Operation = "lowerThan"
+	OperationGreaterThan      Operation = "greaterThan"
+	OperationLowerThanEqual   Operation = "lowerThanEqual"
+	OperationGreaterThanEqual Operation = "greaterThanEqual"
 )
