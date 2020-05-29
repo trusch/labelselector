@@ -18,8 +18,7 @@ const (
 	COMMA                    // ,
 	EXCLAMATION_MARK         // !
 	IN                       // in
-	NOT                      // not
-	NOTIN                    // notin
+	NOT_IN                   // notin
 	EQUAL                    // = or ==
 	NOT_EQUAL                // !=
 	OPENING_BRACKET          // (
@@ -168,7 +167,7 @@ func (s *Lexer) scanIdent() (tok Token, lit string) {
 	case "IN":
 		return IN, buf.String()
 	case "NOTIN":
-		return NOTIN, buf.String()
+		return NOT_IN, buf.String()
 	}
 
 	// Otherwise return as a regular identifier.

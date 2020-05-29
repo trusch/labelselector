@@ -63,7 +63,7 @@ func (p *Parser) Parse() (LabelSelector, error) {
 		}
 		// there are two cases now:
 		// * we see a '!' -> this will be a not-exist requirement
-		// * we see an identifier -> this will be a one of the other requirements
+		// * we see an identifier -> this will be one of the other requirements
 		switch tok {
 		case EXCLAMATION_MARK:
 			// its a not-exist requirement
@@ -73,11 +73,7 @@ func (p *Parser) Parse() (LabelSelector, error) {
 			}
 			selector.Requirements = append(selector.Requirements, req)
 		case IDENT:
-			// we have a identifier so its one of
-			// * equal requirement
-			// * exists requirement
-			// * in requirement
-			// * not-in requirement
+			// we have a identifier so its one of the other requirement types
 			var (
 				key      = lit
 				tok, lit = p.next()
@@ -106,7 +102,7 @@ func (p *Parser) Parse() (LabelSelector, error) {
 			case GREATER_THAN_EQUAL:
 				// its a greater than equal requirement
 				req, err = p.parseGreaterThanEqualRequirement(key)
-			case NOTIN:
+			case NOT_IN:
 				// its a not-in requirement
 				req, err = p.parseNotInRequirement(key)
 			case COMMA, EOF:
