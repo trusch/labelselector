@@ -19,6 +19,7 @@ const (
 	EXCLAMATION_MARK         // !
 	IN                       // in
 	NOT                      // not
+	NOTIN                    // notin
 	EQUAL                    // = or ==
 	NOT_EQUAL                // !=
 	OPENING_BRACKET          // (
@@ -164,10 +165,10 @@ func (s *Lexer) scanIdent() (tok Token, lit string) {
 
 	// If the string matches a keyword then return that keyword.
 	switch strings.ToUpper(buf.String()) {
-	case "NOT":
-		return NOT, buf.String()
 	case "IN":
 		return IN, buf.String()
+	case "NOTIN":
+		return NOTIN, buf.String()
 	}
 
 	// Otherwise return as a regular identifier.

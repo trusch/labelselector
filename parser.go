@@ -106,7 +106,7 @@ func (p *Parser) Parse() (LabelSelector, error) {
 			case GREATER_THAN_EQUAL:
 				// its a greater than equal requirement
 				req, err = p.parseGreaterThanEqualRequirement(key)
-			case NOT:
+			case NOTIN:
 				// its a not-in requirement
 				req, err = p.parseNotInRequirement(key)
 			case COMMA, EOF:
@@ -250,10 +250,6 @@ func (p *Parser) parseInRequirement(key string) (req Requirement, err error) {
 }
 
 func (p *Parser) parseNotInRequirement(key string) (req Requirement, err error) {
-	tok, lit := p.next()
-	if tok != IN {
-		return req, fmt.Errorf("require 'IN' after 'NOT' got '%s'", lit)
-	}
 	req, err = p.parseInRequirement(key)
 	if err != nil {
 		return req, err

@@ -168,8 +168,8 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
-			name:  "one not in test",
-			input: `foo not in (a, b, c)`,
+			name:  "one notin test",
+			input: `foo notin (a, b, c)`,
 			expectedSelector: LabelSelector{
 				Requirements: []Requirement{
 					{
@@ -256,19 +256,14 @@ func TestParser(t *testing.T) {
 			expectedError: errors.New("expect opening bracket after in operator"),
 		},
 		{
-			name:          "not in operator needs argument",
-			input:         `foo not in`,
+			name:          "notin operator needs argument",
+			input:         `foo notin`,
 			expectedError: errors.New("expect opening bracket after in operator"),
 		},
 		{
 			name:          "in operator needs properly formatted argument list",
 			input:         `foo in (]`,
 			expectedError: errors.New("unexpected token in value list (])"),
-		},
-		{
-			name:          "not operator needs in after it",
-			input:         `foo not (a,b,c)`,
-			expectedError: errors.New("require 'IN' after 'NOT' got '('"),
 		},
 	}
 
