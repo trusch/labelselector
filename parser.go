@@ -28,17 +28,11 @@ type Parser struct {
 	lexer *Lexer
 }
 
-// scan gets the next token
-func (p *Parser) scan() (Token, string) {
-	tok, lit := p.lexer.Next()
-	return tok, lit
-}
-
 // next returns the next non-whitespace token
 func (p *Parser) next() (Token, string) {
-	tok, lit := p.scan()
+	tok, lit := p.lexer.Next()
 	for tok == WS {
-		tok, lit = p.scan()
+		tok, lit = p.lexer.Next()
 	}
 	return tok, lit
 }
